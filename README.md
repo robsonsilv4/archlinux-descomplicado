@@ -23,7 +23,31 @@ Ao concluir o boot da live do Arch Linux, mude o layout do teclado para pt-br:
 loadkeys br-abnt2
 ```
 
-- reflector...
+Se tiver utilizando internet cabeada, a conexão será reconhecida automaticamente, mas caso queira utilizar uma conexão wi-fi, utilize o seguinte comando e escolha a sua rede:
+
+```sh
+wifi-menu
+```
+
+Para testar a conexão, utilize o seguinte comando:
+
+```sh
+ping -t 5 google.com
+```
+
+A midia de instalação é atualizada todo incicio de mês, mas mesmo que esteja utilizando a atual é bom sincronizar e rankiar os mirrors para tirar todo o proveito da sua conexão.
+
+Primeiro instale o reflector:
+```sh
+pacman -Sy reflector
+```
+
+E então sincronize os mirrors utilizando os seguinte comando:
+```sh
+reflector --latest 200 --protocol http --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+# Adicone --verbose caso queira ver o progresso
+```
+
 - particionamento...
 - formatação...
 - instalação da base...
