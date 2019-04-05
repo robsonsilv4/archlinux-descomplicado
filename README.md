@@ -48,6 +48,49 @@ reflector --latest 200 --protocol http --protocol https --sort rate --save /etc/
 # Adicone --verbose caso queira ver o progresso
 ```
 
-- particionamento...
-- formatação...
-- instalação da base...
+Para o particionamento iremos utilizar o *cfdisk*, mas antes liste os discos disponíveis:
+
+```
+lsblk
+```
+
+Este é um exemplo de saída do comandos dos meus discos:
+```
+NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+sda      8:0    0 223,6G  0 disk 
+├─sda1   8:1    0   100M  0 part /boot
+├─sda2   8:2    0    50G  0 part /
+└─sda3   8:3    0 173,5G  0 part /home
+```
+
+Iremos criar as partições no */dev/sda* que geralmente é o HD ou SSD principal:
+
+```
+cfdisk /dev/sda
+```
+
+Se não tiver nenhuma partição no disco, será pedido para escolher um label type, então escolha gpt.
+
+Após isso, em new, crie as seguintes partições:
+- A primeira com 250M do tipo EFI System
+- A segunda com 20G, 40G ou 50G do tipo Linux filesystem
+- E a última com o resto do espaço disponível, também do tipo Linux filesystem.
+
+Agora basta escrever as mudanças selecionando *Write* e depois digitando *yes*.
+
+```sh
+mkfs.vfat -F32 /dev/sda1
+mkfs.ext4 /dev/sda2
+mkfs.ext4 /dev/sda3
+```
+
+```sh
+mount /dev/sda2 /mnt
+mkdir /mnt/{home,boot}
+mount /dev/sda2 /mnt
+mount /dev/sda2 /mnt
+```
+
+```sh
+pacstrap /mnt base base-devel
+```
