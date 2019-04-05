@@ -78,21 +78,51 @@ Após isso, em new, crie as seguintes partições:
 
 Agora basta escrever as mudanças selecionando *Write* e depois digitando *yes*.
 
+Antes de montarmos as partições, precisamos formatá-las, para isso, execute os seguintes comandos:
+
 ```sh
+# Lembre-se de alterar os números das partições!
 mkfs.vfat -F32 /dev/sda1
 mkfs.ext4 /dev/sda2
 mkfs.ext4 /dev/sda3
 ```
 
+Após as partições terem sido formatas, iremos montá-las:
+
 ```sh
+# Primeiro a partição raíz
 mount /dev/sda2 /mnt
-mkdir /mnt/{home,boot}
-mount /dev/sda2 /mnt
-mount /dev/sda2 /mnt
+
+# Crie os diretórios de boot e home
+mkdir /mnt/{boot,home}
+
+# E então os monte
+mount /dev/sda1 /mnt/boot
+mount /dev/sda3 /mnt/home
 ```
+
+Verifique as partições montadas novamente com o *lsblk* e se estiver tudo correto, instale a base do sistema com o comando:
 
 ```sh
 pacstrap /mnt base base-devel
+```
+
+Após concluír a instalação das bases, o seu sistema estará praticmente pronto, mas antes de entrarmos nele para fazer algumas configurações necessárias, precisamos gerar o *fstab* para que o Linux lembre de quais partições precisam ser montadas, para isso, utilize o seguinte comando:
+
+```sh
+genfstab -U /mnt >> /mnt/etc/fstab
+```
+
+Agora utilize o *arch-chroot* para entrar de fato no ambiento do novo sistema:
+
+```sh
+arch-chroot /mnt
+```
+
+Configurações de idioma e etc...
+
+```
+# ...
 ```
 
 GRUB...
