@@ -94,3 +94,31 @@ mount /dev/sda2 /mnt
 ```sh
 pacstrap /mnt base base-devel
 ```
+
+GRUB...
+
+```
+pacman -S grub efibootmgr
+```
+
+Pacotes base...
+
+```
+pacman -S tlp networkmanager xorg-server xorg-xinit ttf-dejavu ttf-liberation xdg-user-dirs
+```
+
+Pacotes do KDE...
+
+```
+plasma sddm sddm-kcm packagekit-qt5 plasma-nm konsole yakuake dolphin kdegraphics-thumbnailers ffmpegthumbs ark p7zip unrar kate gwenview vlc okular qt5-translations aspell-pt
+```
+
+```
+partitionmanager filelight
+```
+
+```
+firefox firefox-i8n-pt-br qbittorrent
+```
+
+Descrição dos pacotes...
