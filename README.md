@@ -119,16 +119,50 @@ Agora utilize o *arch-chroot* para entrar de fato no ambiento do novo sistema:
 arch-chroot /mnt
 ```
 
-Configurações de idioma e etc...
+Agora que estamos no novo sistema, precisamos fazer algumas configurações básicas.
+
+Primeiro, utilize o seguinte comando definir quais idiomas estarão disponíveis no sistema:
+
+```sh
+nano /etc/locale.gen
+```
+
+Então descomente os idiomas de sua escolha, como por exemplo:
+```sh
+#...
+en_US UTF-8
+pt_BR UTF-8
+#...
+```
 
 ```
-# ...
+locale-gen
+```
+
+```
+echo "LANG=pt_BR.UTF-8" >> /etc/locale.conf
+```
+
+```
+echo "KEYMAP=br-abnt2" >> /etc/vconsole.conf
+```
+
+```
+ln -sf /usr/share/zoneinfo/America/Fortaleza /etc/localtime
+
+hwclock --systohc
 ```
 
 GRUB...
 
 ```
 pacman -S grub efibootmgr
+```
+
+```
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id="Arch Linux"
+
+grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
 Pacotes base...
@@ -140,7 +174,7 @@ pacman -S tlp networkmanager xorg-server xorg-xinit ttf-dejavu ttf-liberation xd
 Pacotes do KDE...
 
 ```
-plasma sddm sddm-kcm packagekit-qt5 plasma-nm konsole yakuake dolphin kdegraphics-thumbnailers ffmpegthumbs ark p7zip unrar kate gwenview vlc okular qt5-translations aspell-pt
+plasma sddm sddm-kcm packagekit-qt5 plasma-nm konsole yakuake dolphin kdegraphics-thumbnailers ffmpegthumbs ark p7zip unrar kate gwenview spectacle vlc okular kcalc qt5-translations aspell-pt
 ```
 
 ```
